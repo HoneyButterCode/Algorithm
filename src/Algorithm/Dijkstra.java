@@ -72,6 +72,7 @@ public class Dijkstra {
 					update.cost = anotherCost;
 					update.link = via;
 					System.out.println("update Cost " + currCost + " -> " + anotherCost + " via " + via.id);
+					queue.add(update);
 				}
 
 				next = next.link;
@@ -85,16 +86,31 @@ public class Dijkstra {
 		void setStartNode(String nodeName) {
 			Path start = get(nodeName);
 			start.cost = 0;
+			
+			queue.clear();
+			queue.add(start);
+//			for (Path p : table) {
+//				if (p.isKnown == false)
+//					queue.add(p);
+//			}
 		}
 
 		Path selectNode() {
-			queue.clear();
-			for (Path p : table) {
-				if (p.isKnown == false)
-					queue.add(p);
-			}
+//			queue.clear();
+//			for (Path p : table) {
+//				if (p.isKnown == false)
+//					queue.add(p);
+//			}
 
-			Path selected = queue.poll();
+			Path selected = null;
+			while(!queue.isEmpty()) {
+				selected = queue.poll();
+				
+				if(get(selected.id).isKnown == false) {
+					break;
+				}
+			}
+			
 			if (selected != null) {
 				selected.isKnown = true;
 				System.out.println("Pick~!" + selected.id);
